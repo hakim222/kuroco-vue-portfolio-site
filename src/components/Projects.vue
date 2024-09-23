@@ -1,5 +1,5 @@
 <template>
-    <section id="projects" style="height: 100vh; background-color: lightpink;">
+    <section id="projects">
         Projects
         <ProjectsCards v-for="project in projects" :key="project.topics_id" :project="project" />
     </section>
@@ -25,4 +25,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+section {
+    height: 100vh;
+}
+</style>
