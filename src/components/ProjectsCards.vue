@@ -30,8 +30,22 @@ export default {
             }
            
         },
-        downvote() {
-            this.project.votes--
+        async downvote() {
+            try {
+                const response = await fetch(`https://hakim-azizan.g.kuroco.app/rcms-api/1/downvoteproject/${this.project.topics_id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                })
+                if (!response.ok) {
+                    throw new Error('Failed to downvote project')
+                }
+                this.project.votes--
+            } catch (error) {
+                console.error(error)
+            }
         }
     }
 }
