@@ -1,15 +1,24 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App Test Hakim"/>
+    <Navbar />
+    <section id="top" style="height: 100vh; background-color: lightcoral;">Top Page</section>
+    <section id="about" style="height: 100vh; background-color: lightseagreen;">About Me</section>
+    <section id="experience" style="height: 100vh; background-color: lightblue;">Experience</section>
+    <section id="education" style="height: 100vh; background-color: lightgoldenrodyellow;">Education</section>
+    <section id="projects" style="height: 100vh; background-color: lightpink;">
+      <h1>Projects</h1>
+      
+    </section>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Navbar from './components/Navbar.vue';
+import Projects from './components/Projects.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Navbar,
+    Projects
   }
 }
 </script>
