@@ -12,8 +12,18 @@
 export default {
     props: ['project'],
     methods: {
-        upvote() {
-            this.project.votes++
+        async upvote() {
+            try {
+                const response = await fetch(`https://hakim-azizan.g.kuroco.app/rcms-api/1/upvoteproject/${this.project.topics_id}`, {
+                    method: 'POST'
+                })
+                if (!response.ok) {
+                    throw new Error('Failed to upvote project')
+                }
+                this.project.votes++
+            } catch (error) {
+                console.error(error)
+            }
            
         },
         downvote() {
