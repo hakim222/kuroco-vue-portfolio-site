@@ -15,7 +15,11 @@ export default {
         async upvote() {
             try {
                 const response = await fetch(`https://hakim-azizan.g.kuroco.app/rcms-api/1/upvoteproject/${this.project.topics_id}`, {
-                    method: 'POST'
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
                 })
                 if (!response.ok) {
                     throw new Error('Failed to upvote project')
