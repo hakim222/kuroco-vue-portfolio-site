@@ -5,6 +5,7 @@
   <Experience />
   <Education />
   <Projects />
+  <Footer />
 </template>
 
 <script>
@@ -14,7 +15,7 @@ import AboutMe from './components/AboutMe.vue';
 import Experience from './components/Experience.vue';
 import Education from './components/Education.vue';
 import Projects from './components/Projects.vue';
-
+import Footer from './components/Footer.vue';
 export default {
   name: 'App',
   components: {
@@ -23,7 +24,8 @@ export default {
     AboutMe,
     Experience,
     Education,
-    Projects
+    Projects,
+    Footer
   }
 }
 </script>
