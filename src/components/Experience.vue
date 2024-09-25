@@ -1,6 +1,6 @@
 <template>
     <section id="experience">
-        <h2>Work Experience</h2>
+        <h2>Work Experiences</h2>
         <div class="timeline">
             <div v-for="exp in experiences" :key="exp.topics_id" class="timeline-item">
                 <div class="timeline-content">
