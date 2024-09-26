@@ -87,7 +87,7 @@ section {
 
 h2 {
     text-align: center;
-    margin-bottom: 3rem;
+    margin: 3rem 0rem;
     font-size: 2.5rem;
     font-weight: 300;
     letter-spacing: 2px;

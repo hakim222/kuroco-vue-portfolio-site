@@ -10,13 +10,14 @@
         <div class="vote-section">
             <p class="vote-count">Votes: {{ project.votes }}</p>
             <div class="button-group">
-                <button v-if="!hasVoted" @click="upvote" class="vote-button">
+                <button v-if="!hasVoted && !isVoting" @click="upvote" class="vote-button">
                     <i class="fas fa-thumbs-up"></i> Upvote
                 </button>
-                <button v-if="!hasVoted" @click="downvote" class="vote-button downvote">
+                <button v-if="!hasVoted && !isVoting" @click="downvote" class="vote-button downvote">
                     <i class="fas fa-thumbs-down"></i> Downvote
                 </button>
-                <p v-else :class="['vote-message', voteType]">{{ voteMessage }}</p>
+                <p v-if="isVoting" class="vote-message voting">{{ votingMessage }}</p>
+                <p v-if="hasVoted && !isVoting" :class="['vote-message', voteType]">{{ voteMessage }}</p>
             </div>
         </div>
 
@@ -31,6 +32,8 @@ export default {
             hasVoted: false,
             voteMessage: '',
             voteType: '',
+            isVoting: false,
+            votingMessage: '',
         }
     },
     mounted() {
@@ -46,6 +49,8 @@ export default {
             }
         },
         async upvote() {
+            this.isVoting = true;
+            this.votingMessage = 'Upvoting...';
             try {
                 const response = await fetch(`https://hakim-azizan.g.kuroco.app/rcms-api/1/upvoteproject/${this.project.topics_id}`, {
                     method: 'POST',
@@ -57,6 +62,7 @@ export default {
                 if (!response.ok) {
                     throw new Error('Failed to upvote project')
                 }
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API delay
                 this.project.votes++
                 this.hasVoted = true
                 this.voteMessage = 'You have Upvoted this project'
@@ -64,9 +70,13 @@ export default {
                 localStorage.setItem(`vote_${this.project.topics_id}`, 'upvote')
             } catch (error) {
                 console.error(error)
+            } finally {
+                this.isVoting = false;
             }
         },
         async downvote() {
+            this.isVoting = true;
+            this.votingMessage = 'Downvoting...';
             try {
                 const response = await fetch(`https://hakim-azizan.g.kuroco.app/rcms-api/1/downvoteproject/${this.project.topics_id}`, {
                     method: 'POST',
@@ -78,6 +88,7 @@ export default {
                 if (!response.ok) {
                     throw new Error('Failed to downvote project')
                 }
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API delay
                 this.project.votes--
                 this.hasVoted = true
                 this.voteMessage = 'You have Downvoted this project'
@@ -85,6 +96,8 @@ export default {
                 localStorage.setItem(`vote_${this.project.topics_id}`, 'downvote')
             } catch (error) {
                 console.error(error)
+            } finally {
+                this.isVoting = false;
             }
         }
     }
@@ -211,5 +224,25 @@ export default {
     font-weight: bold;
     color: #ffffff;
     text-align: center;
+}
+
+.vote-message.voting {
+    background-color: rgba(60, 60, 60, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+}
+
+.vote-message.voting::before {
+    content: '\f110';
+    animation: fa-spin 2s infinite linear;
+}
+
+@keyframes fa-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 </style>

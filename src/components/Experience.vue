@@ -4,9 +4,9 @@
         <div class="timeline">
             <div v-for="exp in experiences" :key="exp.topics_id" class="timeline-item">
                 <div class="timeline-content">
+                    <p class="date">{{ exp.date_duration }}</p>
                     <h3>{{ exp.subject }}</h3>
                     <p class="company">{{ exp.company }}</p>
-                    <p class="date">{{ exp.date_duration }}</p>
                 </div>
             </div>
         </div>
@@ -32,14 +32,13 @@ export default {
 
 <style scoped>
 section {
-    height: 100vh;
     color: #e0e0e0;
     padding: 4rem 100px 0px;
 }
 
 h2 {
     text-align: center;
-    margin-bottom: 3rem;
+    margin: 3rem 0rem;
     font-size: 2.5rem;
     font-weight: 300;
     letter-spacing: 2px;
@@ -115,22 +114,23 @@ h2 {
     left: -60px;
 }
 
+.date {
+    font-size: 0.9rem;
+    color: #757575;
+    margin-bottom: 0.5rem;
+}
+
 h3 {
     margin-top: 0;
     color: #ffffff;
     font-size: 1.5rem;
     font-weight: 500;
+    margin-bottom: 0.5rem;
 }
 
 .company {
     font-weight: 300;
     color: #bdbdbd;
-    margin-bottom: 0.5rem;
-}
-
-.date {
-    font-size: 0.9rem;
-    color: #757575;
 }
 
 </style>

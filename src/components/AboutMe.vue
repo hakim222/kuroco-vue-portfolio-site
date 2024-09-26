@@ -55,13 +55,12 @@ export default {
 
 <style scoped>
 section {
-    height: 100vh;
     color: #e0e0e0;
     padding: 4rem 100px 0px;
 }
 h2 {
     text-align: center;
-    margin-bottom: 3rem;
+    margin: 3rem 0rem;
     font-size: 2.5rem;
     font-weight: 300;
     letter-spacing: 2px;
