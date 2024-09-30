@@ -9,79 +9,75 @@
         </li>
       </ul>
     </div>
-
   </nav>
 </template>
 
-<script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-
-const links = ref([
-  { id: 'top', name: 'Home' },
-  { id: 'about', name: 'About Me' },
-  { id: 'experience', name: 'Experiences' },
-  { id: 'education', name: 'Educations' },
-  { id: 'projects', name: 'Projects' }
-])
-
-const activeSection = ref('top')
-
-const scrollToSection = (id) => {
-  const section = document.getElementById(id);
-  const navbar = document.querySelector('.navbar');
-  if (section && navbar) {
-    let offset = 0;
-    if (id === 'top') {
-      offset = -navbar.offsetHeight;
+<script>
+export default {
+  data() {
+    return {
+      links: [
+        { id: 'top', name: 'Home' },
+        { id: 'about', name: 'About Me' },
+        { id: 'experience', name: 'Experiences' },
+        { id: 'education', name: 'Educations' },
+        { id: 'projects', name: 'Projects' }
+      ],
+      activeSection: 'top',
+      isScrolled: false
     }
-    const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset + offset;
-    window.scrollTo({ top: sectionPosition, behavior: 'smooth' });
-    activeSection.value = id;
+  },
+  methods: {
+    scrollToSection(id) {
+      const section = document.getElementById(id);
+      const navbar = document.querySelector('.navbar');
+      if (section && navbar) {
+        let offset = 0;
+        if (id === 'top') {
+          offset = -navbar.offsetHeight;
+        }
+        const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset + offset;
+        window.scrollTo({ top: sectionPosition, behavior: 'smooth' });
+        this.activeSection = id;
+      }
+    },
+    onScroll() {
+      this.checkScroll();
+      const sections = this.links.map(link => document.getElementById(link.id));
+      const navbar = document.querySelector('.navbar');
+      const offset = navbar ? navbar.clientHeight : 0;
+
+      sections.forEach(section => {
+        if (section) {
+          const sectionTop = section.getBoundingClientRect().top - offset;
+          const sectionBottom = sectionTop + section.offsetHeight;
+          if (sectionTop <= 0 && sectionBottom > 0) {
+            this.activeSection = section.id;
+          }
+        }
+      });
+    },
+    checkScroll() {
+      this.isScrolled = window.scrollY > 0;
+    }
+  },
+  mounted() {
+    window.addEventListener('scroll', this.onScroll);
+    this.checkScroll();
+  },
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
   }
 }
-
-const onScroll = () => {
-  checkScroll()
-  const sections = links.value.map(link => document.getElementById(link.id));
-  const navbar = document.querySelector('.navbar');
-  const offset = navbar ? navbar.clientHeight : 0;
-
-  sections.forEach(section => {
-    if (section) {
-      const sectionTop = section.getBoundingClientRect().top - offset;
-      const sectionBottom = sectionTop + section.offsetHeight;
-      if (sectionTop <= 0 && sectionBottom > 0) {
-        activeSection.value = section.id;
-      }
-    }
-  });
-}
-
-const isScrolled = ref(false)
-
-const checkScroll = () => {
-  isScrolled.value = window.scrollY > 0
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', onScroll);
-  checkScroll()
-});
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', onScroll);
-});
 </script>
 
 <style scoped>
 .navbar {
   display: flex;
   align-items: center;
-  padding: 0px;
   position: sticky;
   top: 0;
   width: 100%;
-  height: auto;
   z-index: 1000;
   transition: all 0.3s ease;
 }
@@ -98,12 +94,12 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin: 0px 100px;
+  margin: 0 100px;
 }
 
 .brand-name {
   font-family: 'Orbitron', sans-serif;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: bold;
   background: linear-gradient(45deg, #4ecdc4, #45b7aa, #3a9791);
   background-size: 200% 200%;
@@ -111,19 +107,11 @@ onUnmounted(() => {
   -webkit-background-clip: text;
   background-clip: text;
   animation: gradientShift 8s ease infinite;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  letter-spacing: 1px;
-  transition: transform 0.3s ease;
-}
-
-.brand-name:hover {
-  transform: scale(1.05);
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
+  0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 .nav-links {
@@ -132,9 +120,8 @@ onUnmounted(() => {
   padding: 1.2rem 1rem;
   border-radius: 1.5rem;
   list-style-type: none;
-  margin: 0;
-  gap: 1rem;
   margin: 1rem 0;
+  gap: 1rem;
   background: rgba(54, 54, 54, 0.733);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
@@ -161,8 +148,61 @@ onUnmounted(() => {
 .nav-links a.active {
   background-color: #3a9791;
   color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 1rem;
   border-color: #4ecdc4;
+}
+
+@media (max-width: 1246px) {
+  .brand-name {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 1014px) {
+  .nav-container {
+    justify-content: center;
+  }
+  .brand-name {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    margin: 0 20px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .brand-name {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .nav-links {
+    padding: 0.5rem;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+  }
+
+  .nav-links a {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-name {
+    font-size: 1.2rem;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-links a {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+  }
 }
 </style>

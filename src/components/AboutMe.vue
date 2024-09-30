@@ -14,7 +14,8 @@
       
       <div class="bento-item skills-container">
         <h4 class="section-title">My Skills</h4>
-        <div class="skills-grid">
+        <div v-if="skillsError" class="error-message">{{ skillsError }}</div>
+        <div v-else class="skills-grid">
           <div v-for="skill in skills" :key="skill.topics_id" class="skill-item">
             <img :src="skill.image.url" :alt="skill.subject" class="skill-logo">
             <span class="skill-name">{{ skill.subject }}</span>
@@ -24,7 +25,8 @@
       
       <div class="bento-item hobbies-container">
         <h4 class="section-title">Things I like~</h4>
-        <div class="hobbies-grid">
+        <div v-if="hobbiesError" class="error-message">{{ hobbiesError }}</div>
+        <div v-else class="hobbies-grid">
           <div v-for="hobby in hobbies" :key="hobby.topics_id" class="hobby-item">
             <div class="hobby-image" :style="{ backgroundImage: `url(${hobby.image.url})` }">
               <span class="hobby-subject">{{ hobby.subject }}</span>
@@ -55,7 +57,9 @@ export default {
                 }
             ],
             skills: [],
-            hobbies: []
+            hobbies: [],
+            skillsError: null,
+            hobbiesError: null
         }
     },
 
@@ -67,15 +71,31 @@ export default {
     methods: {
         fetchHobbies() {
             fetch('https://hakim-azizan.g.kuroco.app/rcms-api/1/hobbies')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => this.hobbies = data.list)
-                .catch(error => console.error('Error fetching hobbies:', error))
+                .catch(error => {
+                    console.error('Error fetching hobbies:', error);
+                    this.hobbiesError = 'Failed to load hobbies. Please try again later.';
+                })
         },
         fetchSkills() {
             fetch('https://hakim-azizan.g.kuroco.app/rcms-api/1/skills')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => this.skills = data.list)
-                .catch(error => console.error('Error fetching skills:', error))
+                .catch(error => {
+                    console.error('Error fetching skills:', error);
+                    this.skillsError = 'Failed to load skills. Please try again later.';
+                })
         }
     }
 }
@@ -84,16 +104,17 @@ export default {
 <style scoped>
 section {
   color: #e0e0e0;
-  padding: 4rem 100px 0px;
+  padding: 4rem 100px 0;
 }
 
 h2 {
     text-align: center;
-    margin: 3rem 0rem;
+    margin: 3rem 0;
     font-size: 2.5rem;
     font-weight: 300;
     letter-spacing: 2px;
 }
+
 .bento-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -108,10 +129,6 @@ h2 {
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-.bio {
-  grid-column: 1 / -1;
 }
 
 h3 {
@@ -187,13 +204,22 @@ p {
   padding: 0.5rem;
 }
 
+.error-message {
+  color: #ff6b6b;
+  text-align: center;
+  padding: 1rem;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 10px;
+  margin-top: 1rem;
+}
+
 @media (max-width: 768px) {
   .bento-grid {
     grid-template-columns: 1fr;
   }
   
   section {
-    padding: 2rem 20px 0px;
+    padding: 2rem 20px 0;
   }
 }
 </style>

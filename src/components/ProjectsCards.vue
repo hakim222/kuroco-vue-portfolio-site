@@ -3,21 +3,37 @@
         <div>
             <img v-if="project.image && project.image.url" :src="project.image.url" :alt="project.subject"
                 class="project-image">
-            <h2 class="project-title">{{ project.subject }}</h2>
+            <div class="project-header">
+                <h2 class="project-title">{{ project.subject }}</h2>
+                <div class="project-links">
+                    <a v-if="project.github" :href="project.github" target="_blank" rel="noopener noreferrer" class="icon-link github-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a v-if="project.app_url" :href="project.app_url" target="_blank" rel="noopener noreferrer" class="icon-link app-link">
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
             <p class="project-description">{{ project.description }}</p>
+            <div class="tech-tags">
+                <span v-for="tag in techTags" :key="tag" class="tech-tag">{{ tag }}</span>
+            </div>
         </div>
 
         <div class="vote-section">
             <p class="vote-count">Votes: {{ project.votes }}</p>
             <div class="button-group">
-                <button v-if="!hasVoted && !isVoting" @click="upvote" class="vote-button">
-                    <i class="fas fa-thumbs-up"></i> Upvote
-                </button>
-                <button v-if="!hasVoted && !isVoting" @click="downvote" class="vote-button downvote">
-                    <i class="fas fa-thumbs-down"></i> Downvote
-                </button>
+                <template v-if="!hasVoted && !isVoting && !showError">
+                    <button @click="upvote" class="vote-button">
+                        <i class="fas fa-thumbs-up"></i> Upvote
+                    </button>
+                    <button @click="downvote" class="vote-button downvote">
+                        <i class="fas fa-thumbs-down"></i> Downvote
+                    </button>
+                </template>
                 <p v-if="isVoting" class="vote-message voting">{{ votingMessage }}</p>
                 <p v-if="hasVoted && !isVoting" :class="['vote-message', voteType]">{{ voteMessage }}</p>
+                <p v-if="showError" class="vote-message error">{{ errorMessage }}</p>
             </div>
         </div>
 
@@ -26,7 +42,12 @@
 
 <script>
 export default {
-    props: ['project'],
+    props: {
+        project: {
+            type: Object,
+            required: true
+        }
+    },
     data() {
         return {
             hasVoted: false,
@@ -34,6 +55,16 @@ export default {
             voteType: '',
             isVoting: false,
             votingMessage: '',
+            showError: false,
+            errorMessage: '',
+        }
+    },
+    computed: {
+        voteEndpoint() {
+            return `https://hakim-azizan.g.kuroco.app/rcms-api/1/${this.voteType}project/${this.project.topics_id}`
+        },
+        techTags() {
+            return this.project.tech_tags ? this.project.tech_tags.split(',').map(tag => tag.trim()) : []
         }
     },
     mounted() {
@@ -48,57 +79,46 @@ export default {
                 this.voteMessage = voteStatus === 'upvote' ? 'You have Upvoted this project' : 'You have Downvoted this project'
             }
         },
-        async upvote() {
+        vote(type) {
+            this.voteType = type;
             this.isVoting = true;
-            this.votingMessage = 'Upvoting...';
-            try {
-                const response = await fetch(`https://hakim-azizan.g.kuroco.app/rcms-api/1/upvoteproject/${this.project.topics_id}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({})
-                })
+            this.votingMessage = `${type === 'upvote' ? 'Upvoting' : 'Downvoting'}...`;
+
+            fetch(this.voteEndpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({})
+            })
+            .then(response => {
                 if (!response.ok) {
-                    throw new Error('Failed to upvote project')
+                    throw new Error(`Failed to ${type} project`);
                 }
-                await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API delay
-                this.project.votes++
-                this.hasVoted = true
-                this.voteMessage = 'You have Upvoted this project'
-                this.voteType = 'upvote'
-                localStorage.setItem(`vote_${this.project.topics_id}`, 'upvote')
-            } catch (error) {
-                console.error(error)
-            } finally {
+                return new Promise(resolve => setTimeout(resolve, 1000)); 
+            })
+            .then(() => {
+                this.project.votes += type === 'upvote' ? 1 : -1;
+                this.hasVoted = true;
+                this.voteMessage = `You have ${type === 'upvote' ? 'upvoted' : 'downvoted'} this project`;
+                localStorage.setItem(`vote_${this.project.topics_id}`, type);
+            })
+            .catch(error => {
+                console.error(error);
+                this.showError = true;
+                this.errorMessage = `Failed to ${type} project`;
+                setTimeout(() => {
+                    this.showError = false;
+                    this.errorMessage = '';
+                }, 2000);
+            })
+            .finally(() => {
                 this.isVoting = false;
-            }
+            });
         },
-        async downvote() {
-            this.isVoting = true;
-            this.votingMessage = 'Downvoting...';
-            try {
-                const response = await fetch(`https://hakim-azizan.g.kuroco.app/rcms-api/1/downvoteproject/${this.project.topics_id}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({})
-                })
-                if (!response.ok) {
-                    throw new Error('Failed to downvote project')
-                }
-                await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API delay
-                this.project.votes--
-                this.hasVoted = true
-                this.voteMessage = 'You have Downvoted this project'
-                this.voteType = 'downvote'
-                localStorage.setItem(`vote_${this.project.topics_id}`, 'downvote')
-            } catch (error) {
-                console.error(error)
-            } finally {
-                this.isVoting = false;
-            }
+        upvote() {
+            this.vote('upvote')
+        },
+        downvote() {
+            this.vote('downvote')
         }
     }
 }
@@ -109,9 +129,6 @@ export default {
     background-color: rgba(40, 40, 40, 0.7);
     border-radius: 15px;
     padding: 25px;
-    margin: 20px;
-    max-width: 350px;
-    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -243,6 +260,92 @@ export default {
     }
     100% {
         transform: rotate(360deg);
+    }
+}
+
+.project-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.project-links {
+    display: flex;
+    gap: 10px;
+}
+
+.icon-link {
+    font-size: 1.5rem;
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.github-link:hover {
+    color: #45b7aa;
+}
+
+.app-link:hover {
+    color: #45b7aa;
+}
+
+@media (max-width: 480px) {
+    .project-card {
+        padding: 20px;
+    }
+
+    .project-title {
+        font-size: 1.3rem;
+    }
+
+    .project-description {
+        font-size: 0.9rem;
+    }
+
+    .vote-count {
+        font-size: 1rem;
+    }
+
+    .vote-button {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    .vote-message {
+        font-size: 0.8rem;
+    }
+
+    .github-link {
+        font-size: 1.3rem;
+    }
+
+    .app-link {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+}
+
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.tech-tag {
+    background-color: rgba(69, 183, 170, 0.2);
+    color: #45b7aa;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+@media (max-width: 480px) {
+    .tech-tag {
+        font-size: 0.7rem;
+        padding: 3px 8px;
     }
 }
 </style>

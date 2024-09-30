@@ -1,12 +1,13 @@
 <template>
     <section id="experience">
         <h2>Work Experiences</h2>
-        <div class="timeline">
+        <div v-if="experiencesError" class="error-message">{{ experiencesError }}</div>
+        <div v-else class="timeline">
             <div v-for="(exp, index) in experiences" :key="exp.topics_id" class="timeline-item" :class="{ 'left': index % 2 === 0, 'right': index % 2 !== 0 }">
                 <div class="timeline-content">
                     <p class="date">{{ exp.date_duration }}</p>
                     <h3>{{ exp.subject }}</h3>
-                    <p class="company"><i class="fas fa-map-marker-alt"></i>   {{ exp.company }}</p>
+                    <p class="company"><i class="fas fa-map-marker-alt"></i> {{ exp.company }}</p>
                     <p class="description">{{ exp.description }}</p>
                 </div>
             </div>
@@ -18,15 +19,30 @@
 export default {
     data() {
         return {
-            experiences: []
+            experiences: [],
+            experiencesError: null
         }
     },
 
     mounted() {
-        fetch('https://hakim-azizan.g.kuroco.app/rcms-api/1/experiences')
-            .then(response => response.json())
-            .then(data => this.experiences = data.list)
-            .catch(error => console.error(error))
+        this.fetchExperiences()
+    },
+
+    methods: {
+        fetchExperiences() {
+            fetch('https://hakim-azizan.g.kuroco.app/rcms-api/1/experiences')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => this.experiences = data.list)
+                .catch(error => {
+                    console.error('Error fetching experiences:', error);
+                    this.experiencesError = 'Failed to load work experiences. Please try again later.';
+                })
+        }
     }
 }
 </script>
@@ -34,12 +50,12 @@ export default {
 <style scoped>
 section {
     color: #e0e0e0;
-    padding: 4rem 100px 0px;
+    padding: 4rem 100px 0;
 }
 
 h2 {
     text-align: center;
-    margin: 3rem 0rem;
+    margin: 3rem 0;
     font-size: 2.5rem;
     font-weight: 300;
     letter-spacing: 2px;
@@ -139,6 +155,15 @@ h3 {
     line-height: 1.5;
 }
 
+.error-message {
+    color: #ff6b6b;
+    text-align: center;
+    padding: 1rem;
+    background: rgba(255, 107, 107, 0.1);
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
 @media screen and (max-width: 600px) {
     .timeline::after {
         left: 31px;
@@ -151,7 +176,7 @@ h3 {
     }
 
     .timeline-item.right {
-        left: 0%;
+        left: 0;
     }
 
     .timeline-item.left::after,

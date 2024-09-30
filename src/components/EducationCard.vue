@@ -6,7 +6,7 @@
     <div class="card-content">
       <h3>{{ education.subject }}</h3>
       <p class="year"><i class="fas fa-calendar-alt"></i> {{ education.year }}</p>
-      <p class="place"><i class="fas fa-map-marker-alt"></i>   {{ education.place }}</p>
+      <p class="place"><i class="fas fa-map-marker-alt"></i> {{ education.place }}</p>
       <p class="qualification">{{ education.qualifications }}</p>
       <p class="description">{{ education.description }}</p>
     </div>
@@ -38,8 +38,8 @@ export default {
   position: relative;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   flex: 0 0 auto;
-  width: 400px; /* Increased from 300px */
-  min-height: 500px; /* Increased from 400px */
+  width: 400px;
+  min-height: 500px;
   margin-right: 1.5rem;
   scroll-snap-align: start;
   display: flex;
@@ -54,7 +54,7 @@ export default {
 }
 
 .logo-container {
-  height: 140px; /* Increased from 120px */
+  height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,25 +70,25 @@ export default {
 
 .card-content {
   flex-grow: 1;
-  padding: 1.5rem; /* Increased from 1rem */
+  padding: 1.5rem;
   overflow-y: auto;
 }
 
 h3 {
-  font-size: 1.5rem; /* Increased from 1.2rem */
-  margin-bottom: 0.75rem; /* Increased from 0.5rem */
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
   color: #ffffff;
 }
 
-.place, .qualification {
-  font-size: 1.1rem; /* Increased from 0.9rem */
-  margin-bottom: 0.5rem; /* Increased from 0.3rem */
+.place, .qualification, .year {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
   color: rgba(255, 255, 255, 0.8);
 }
 
 .description {
-  font-size: 1rem; /* Increased from 0.8rem */
-  line-height: 1.5; /* Increased from 1.4 */
+  font-size: 1rem;
+  line-height: 1.5;
   color: rgba(255, 255, 255, 0.7);
 }
 
@@ -110,13 +110,6 @@ h3 {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.year {
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-/* Scrollbar styles for webkit browsers */
 .card-content::-webkit-scrollbar {
   width: 6px;
 }

@@ -2,23 +2,30 @@
     <section id="education">
         <h2>Educations</h2>
         <div v-if="loading">Loading...</div>
-        <div v-else-if="error">{{ error }}</div>
+        <div v-else-if="error" class="error-message">{{ error }}</div>
         <div v-else>
             <div class="drag-indicator">
                 <i class="fas fa-arrows-alt-v"></i>
                 Drag items to change order!
             </div>
-            <draggable v-model="educations" @end="updateOrder" item-key="id" class="education-list">
-                <template #item="{ element }">
-                    <EducationCard :education="element" />
-                </template>
-            </draggable>
+            <div v-if="updateMessage" :class="['vote-message', { 'error': updateError }]">
+                {{ updateMessage }}
+            </div>
+            <div class="education-list-container">
+                <div v-if="updating" class="overlay">
+                    <p class="vote-message voting">Updating order...</p>
+                </div>
+                <draggable v-model="educations" @end="updateOrder" item-key="id" class="education-list">
+                    <template #item="{ element }">
+                        <EducationCard :education="element" />
+                    </template>
+                </draggable>
+            </div>
         </div>
     </section>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
 import draggable from 'vuedraggable';
 import EducationCard from './EducationCard.vue';
 
@@ -27,93 +34,101 @@ export default {
         draggable,
         EducationCard
     },
-    setup() {
-        const educations = ref([]);
-        const loading = ref(true);
-        const error = ref(null);
-
-        const fetchEducations = async () => {
-            try {
-                const response = await fetch('https://hakim-azizan.g.kuroco.app/rcms-api/1/educations');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                educations.value = data.list.sort((a, b) => a.order - b.order);
-                loading.value = false;
-            } catch (err) {
-                error.value = 'Failed to fetch education data';
-                loading.value = false;
-            }
+    data() {
+        return {
+            educations: [],
+            loading: true,
+            error: null,
+            updating: false,
+            updateMessage: null,
+            updateError: false
         };
+    },
+    mounted() {
+        this.fetchEducations();
+    },
+    methods: {
+        fetchEducations() {
+            fetch('https://hakim-azizan.g.kuroco.app/rcms-api/1/educations')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    this.educations = data.list.sort((a, b) => a.order - b.order);
+                    this.loading = false;
+                })
+                .catch(err => {
+                    this.error = 'Failed to fetch education data';
+                    this.loading = false;
+                    console.error('Error fetching educations:', err);
+                });
+        },
+        updateOrder() {
+            this.updating = true;
+            this.updateMessage = null;
+            this.updateError = false;
 
-        const updateOrder = async () => {
-            const updatedEducations = educations.value.map((edu, index) => ({
+            const updatedEducations = this.educations.map((edu, index) => ({
                 topics_id: edu.topics_id,
-                order: index + 1 // Update the order based on the new index
+                order: index + 1
             }));
 
-            try {
-                const response = await fetch('https://hakim-azizan.g.kuroco.app/rcms-api/1/reordereducations', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ list: updatedEducations })
-                });
-
+            fetch('https://hakim-azizan.g.kuroco.app/rcms-api/1/reordereducations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ list: updatedEducations })
+            })
+            .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to update education order');
                 }
-
-                // Optionally, refresh the educations list after successful update
-                await fetchEducations();
-            } catch (err) {
+                return this.fetchEducations();
+            })
+            .then(() => {
+                this.updateMessage = 'Update completed successfully!';
+                setTimeout(() => {
+                    this.updateMessage = null;
+                }, 3000);
+            })
+            .catch(err => {
                 console.error('Failed to update education order:', err);
-            }
-        };
-
-        onMounted(fetchEducations);
-
-        return {
-            educations,
-            loading,
-            error,
-            updateOrder
-        };
+                this.updateMessage = 'Failed to update education order';
+                this.updateError = true;
+            })
+            .finally(() => {
+                this.updating = false;
+            });
+        }
     }
 }
 </script>
 
-<style scoped> 
+<style scoped>
 section {
     color: #e0e0e0;
-    padding: 4rem 0px 2rem;
+    padding: 4rem 100px 0;
 }
 
 h2 {
     text-align: center;
-    margin: 3rem 0rem;
+    margin: 3rem 0;
     font-size: 2.5rem;
     font-weight: 300;
     letter-spacing: 2px;
 }
 
-#education {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .education-list {
-    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 2rem; 
     padding: 1rem;
 }
-
 
 .education-list::-webkit-scrollbar,
 .education-list::-webkit-scrollbar-track,
@@ -146,5 +161,70 @@ h2 {
 
 .drag-indicator i {
     font-size: 1.2rem;
+}
+
+.education-list-container {
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.vote-message {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    padding: 8px 15px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.vote-message::before {
+    font-family: 'Font Awesome 5 Free';
+    margin-right: 5px;
+}
+
+.vote-message.voting {
+    background-color: rgba(60, 60, 60, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.vote-message.voting::before {
+    content: '\f110';
+    animation: fa-spin 2s infinite linear;
+}
+
+.vote-message.error {
+    background-color: rgba(78, 0, 0, 0.6);
+    border: 1px solid rgba(255, 99, 71, 0.4);
+    color: rgb(180, 74, 55);
+}
+
+@keyframes fa-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error-message {
+    color: #ff6b6b;
+    text-align: center;
+    padding: 1rem;
+    background: rgba(255, 107, 107, 0.1);
+    border-radius: 10px;
+    margin-top: 1rem;
 }
 </style>
