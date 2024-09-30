@@ -2,11 +2,12 @@
     <section id="experience">
         <h2>Work Experiences</h2>
         <div class="timeline">
-            <div v-for="exp in experiences" :key="exp.topics_id" class="timeline-item">
+            <div v-for="(exp, index) in experiences" :key="exp.topics_id" class="timeline-item" :class="{ 'left': index % 2 === 0, 'right': index % 2 !== 0 }">
                 <div class="timeline-content">
                     <p class="date">{{ exp.date_duration }}</p>
                     <h3>{{ exp.subject }}</h3>
-                    <p class="company">{{ exp.company }}</p>
+                    <p class="company"><i class="fas fa-map-marker-alt"></i>   {{ exp.company }}</p>
+                    <p class="description">{{ exp.description }}</p>
                 </div>
             </div>
         </div>
@@ -46,8 +47,8 @@ h2 {
 
 .timeline {
     position: relative;
-    max-width: 1200px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 .timeline::after {
@@ -68,18 +69,16 @@ h2 {
     box-sizing: border-box;
 }
 
-.timeline-item:nth-child(odd) {
+.timeline-item.left {
     left: 0;
-    padding-right: 50px;
 }
 
-.timeline-item:nth-child(even) {
+.timeline-item.right {
     left: 50%;
-    padding-left: 50px;
 }
 
 .timeline-content {
-    padding: 20px 30px;
+    padding: 20px;
     background-color: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     position: relative;
@@ -94,7 +93,7 @@ h2 {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
-.timeline-content::after {
+.timeline-item::after {
     content: '';
     position: absolute;
     width: 20px;
@@ -106,12 +105,12 @@ h2 {
     z-index: 1;
 }
 
-.timeline-item:nth-child(odd) .timeline-content::after {
-    right: -60px;
+.timeline-item.left::after {
+    right: -10px;
 }
 
-.timeline-item:nth-child(even) .timeline-content::after {
-    left: -60px;
+.timeline-item.right::after {
+    left: -10px;
 }
 
 .date {
@@ -133,4 +132,31 @@ h3 {
     color: #bdbdbd;
 }
 
+.description {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: #d0d0d0;
+    line-height: 1.5;
+}
+
+@media screen and (max-width: 600px) {
+    .timeline::after {
+        left: 31px;
+    }
+
+    .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+    }
+
+    .timeline-item.right {
+        left: 0%;
+    }
+
+    .timeline-item.left::after,
+    .timeline-item.right::after {
+        left: 21px;
+    }
+}
 </style>

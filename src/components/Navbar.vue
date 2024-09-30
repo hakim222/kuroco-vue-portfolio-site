@@ -103,14 +103,21 @@ onUnmounted(() => {
 
 .brand-name {
   font-family: 'Orbitron', sans-serif;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
-  background: linear-gradient(45deg, #a8b5c3, #687481, #a8b5c3);
+  background: linear-gradient(45deg, #4ecdc4, #45b7aa, #3a9791);
   background-size: 200% 200%;
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
   animation: gradientShift 8s ease infinite;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  letter-spacing: 1px;
+  transition: transform 0.3s ease;
+}
+
+.brand-name:hover {
+  transform: scale(1.05);
 }
 
 @keyframes gradientShift {
@@ -152,10 +159,10 @@ onUnmounted(() => {
 }
 
 .nav-links a.active {
-  background-color: #007bff;
+  background-color: #3a9791;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 1rem;
-  border-color: #007bff;
+  border-color: #4ecdc4;
 }
 </style>
