@@ -1,6 +1,6 @@
 <template>
   <section id="about">
-    <h2 class="section-title">About Me</h2>
+    <h2>About Me</h2>
     <div class="bento-grid">
       <div class="bento-item bio-card">
         <h3 class="name">Muhammad Hakim Bin 'Azizan</h3>
@@ -106,14 +106,6 @@ section {
   color: #e0e0e0;
 }
 
-h2 {
-    text-align: center;
-    margin: 3rem 0;
-    font-size: 2.5rem;
-    font-weight: 300;
-    letter-spacing: 2px;
-}
-
 .bento-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -217,5 +209,31 @@ p {
     grid-template-columns: 1fr;
   }
   
+}
+
+@media (max-width: 480px) {
+  .bento-grid {
+    gap: 1rem;
+  }
+  .bento-item {
+    padding: 1rem;
+  }
+  .name {
+    font-size: 1.5rem;
+  }
+  .location, .section-title, .name, .section-content {
+    margin: 0;
+  }
+  .location {
+    margin-top: 0.5rem;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  .section-content {
+    font-size: 0.8rem;
+  }
 }
 </style>

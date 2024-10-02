@@ -118,14 +118,6 @@ section {
     color: #e0e0e0;
 }
 
-h2 {
-    text-align: center;
-    margin: 3rem 0;
-    font-size: 2.5rem;
-    font-weight: 300;
-    letter-spacing: 2px;
-}
-
 .education-list {
     display: flex;
     flex-wrap: wrap;

@@ -240,6 +240,7 @@ p {
 
   .image-container {
     width: 100%;
+    height: 350px;
   }
 }
 </style>

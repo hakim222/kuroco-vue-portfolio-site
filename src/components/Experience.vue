@@ -52,14 +52,6 @@ section {
     color: #e0e0e0;
 }
 
-h2 {
-    text-align: center;
-    margin: 3rem 0;
-    font-size: 2.5rem;
-    font-weight: 300;
-    letter-spacing: 2px;
-}
-
 .timeline {
     position: relative;
     margin: 0 auto;
@@ -163,7 +155,7 @@ h3 {
     margin-top: 1rem;
 }
 
-@media screen and (max-width: 600px) {
+@media (max-width: 600px) {
     .timeline::after {
         left: 31px;
     }
@@ -182,5 +174,53 @@ h3 {
     .timeline-item.right::after {
         left: 21px;
     }
+}
+
+@media (max-width: 480px) {
+  .timeline {
+    padding: 0;
+  }
+  .timeline::after {
+    left: 20px;
+    width: 5px;
+  }
+
+  .timeline-item.left::after,
+  .timeline-item.right::after {
+    left: 10px;
+  }
+
+  .timeline-item {
+    padding-left: 2.5rem;
+    padding-right: 10px;
+  }
+
+  .timeline-content {
+    padding: 1rem;
+  }
+
+  h3,.date, .company, .description {
+    margin: 0;
+  }
+
+  .date {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+
+  .company {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .description {
+    font-size: 0.8rem;
+  }
 }
 </style>
