@@ -204,6 +204,7 @@ li {
 @media (max-width: 480px) {
   .nav-links {
     padding: 0.5rem 0.5rem;
+    column-gap: 0.2rem;
   }
   .nav-links a {
     font-size: 0.7rem;
