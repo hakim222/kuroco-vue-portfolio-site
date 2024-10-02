@@ -1,22 +1,26 @@
 <template>
   <section id="top">
-    <div class="background-animation"></div>
-    <div class="content">
-      <p>Hello there! Welcome to my site.</p>
-      <h1 class="name">Hakim 'Azizan</h1>
-      <p class="title">Full Stack Developer & UI/UX Enthusiast</p>
-      <p class="description">
-        Crafting elegant solutions with code and design. Specializing in web technologies and creating seamless user experiences.
-      </p>
-      <div class="social-links">
-        <a v-for="social in socials" :key="social.name" :href="social.url" target="_blank" rel="noopener noreferrer">
-          <i :class="social.icon"></i>
-        </a>
+    <div class="container">
+      <div class="background-animation"></div>
+      <div class="content">
+        <p>Hello there! Welcome to my site.</p>
+        <h1 class="name">Hakim 'Azizan</h1>
+        <p class="title">Full Stack Developer & UI/UX Enthusiast</p>
+        <p class="description">
+          Crafting elegant solutions with code and design. Specializing in web technologies and creating seamless user
+          experiences.
+        </p>
+        <div class="social-links">
+          <a v-for="social in socials" :key="social.name" :href="social.url" target="_blank" rel="noopener noreferrer">
+            <i :class="social.icon"></i>
+          </a>
+        </div>
+      </div>
+      <div class="image-container">
+        <img src="/img/potrait_top_page.jpg" alt="Hakim 'Azizan portrait" />
       </div>
     </div>
-    <div class="image-container">
-      <img src="/img/potrait_top_page.jpg" alt="Hakim 'Azizan portrait" />
-    </div>
+
     <div class="scroll-indicator">
       <span>Scroll Down</span>
       <i class="fas fa-chevron-down"></i>
@@ -49,6 +53,12 @@ section {
   justify-content: space-between;
   position: relative;
   overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .content {
@@ -125,8 +135,13 @@ p {
 }
 
 @keyframes gradient-shift {
-  0% { background-position: 0% 0%; }
-  100% { background-position: 400% 0%; }
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 400% 0%;
+  }
 }
 
 .background-animation {
@@ -136,15 +151,20 @@ p {
   width: 100%;
   height: 100%;
   background: linear-gradient(45deg, rgba(78, 205, 196, 0.1) 25%, transparent 25%),
-              linear-gradient(-45deg, rgba(255, 107, 107, 0.1) 25%, transparent 25%);
+    linear-gradient(-45deg, rgba(255, 107, 107, 0.1) 25%, transparent 25%);
   background-size: 60px 60px;
   animation: moveBackground 10s linear infinite;
   z-index: -1;
 }
 
 @keyframes moveBackground {
-  0% { background-position: 0 0; }
-  100% { background-position: 60px 60px; }
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 60px;
+  }
 }
 
 .scroll-indicator {
@@ -165,8 +185,61 @@ p {
 }
 
 @keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-10px); }
-  60% { transform: translateY(-5px); }
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-10px);
+  }
+
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@media (max-width: 768px) {
+
+  p {
+    font-size: 1rem;
+  }
+
+  .name {
+    font-size: 2rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .image-container {
+    height: 400px;
+  }
+
+
+}
+
+@media (max-width: 480px) {
+  .container {
+    flex-direction: column;
+    row-gap: 1rem;
+  }
+
+  .content {
+    max-width: 100%;
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  .image-container {
+    width: 100%;
+  }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <footer class="footer">
         <div class="footer-content">
-            <p>&copy; {{ currentYear }} Hakim Azizan. All rights reserved.</p>
+            <p>&copy; {{ currentYear }} Hakim 'Azizan. All rights reserved.</p>
             <div class="social-links">
                 <a v-for="social in socials" :key="social.name" :href="social.url" target="_blank" rel="noopener noreferrer">
                     <i :class="social.icon"></i>
@@ -30,17 +30,19 @@ export default {
 
 <style scoped>
 .footer {
+    display: block;
     margin-top: 50px;
     background-color: #2d2d2d;
     color: #fff;
     padding: 20px 0;
     text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    width: 100%;
 }
 
 .footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
+    width: auto;
+    margin: 0 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;

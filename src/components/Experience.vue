@@ -50,7 +50,6 @@ export default {
 <style scoped>
 section {
     color: #e0e0e0;
-    padding: 4rem 100px 0;
 }
 
 h2 {

@@ -8,9 +8,6 @@
                 <i class="fas fa-arrows-alt-v"></i>
                 Drag items to change order!
             </div>
-            <div v-if="updateMessage" :class="['vote-message', { 'error': updateError }]">
-                {{ updateMessage }}
-            </div>
             <div class="education-list-container">
                 <div v-if="updating" class="overlay">
                     <p class="vote-message voting">Updating order...</p>
@@ -67,6 +64,14 @@ export default {
                 });
         },
         updateOrder() {
+
+            const hasOrderChanged = this.educations.some((edu, index) => edu.order !== index + 1);
+
+            if (!hasOrderChanged) {
+                console.log('Order unchanged, skipping update');
+                return;
+            }
+
             this.updating = true;
             this.updateMessage = null;
             this.updateError = false;
@@ -111,7 +116,6 @@ export default {
 <style scoped>
 section {
     color: #e0e0e0;
-    padding: 4rem 100px 0;
 }
 
 h2 {

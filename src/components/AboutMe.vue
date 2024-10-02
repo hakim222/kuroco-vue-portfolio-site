@@ -104,7 +104,6 @@ export default {
 <style scoped>
 section {
   color: #e0e0e0;
-  padding: 4rem 100px 0;
 }
 
 h2 {
@@ -218,8 +217,5 @@ p {
     grid-template-columns: 1fr;
   }
   
-  section {
-    padding: 2rem 20px 0;
-  }
 }
 </style>

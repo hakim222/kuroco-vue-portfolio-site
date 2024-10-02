@@ -56,7 +56,6 @@ export default {
 
 <style scoped>
 section {
-    padding: 4rem 100px 0;
     color: #e0e0e0;
 }
 

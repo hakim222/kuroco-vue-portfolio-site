@@ -32,31 +32,40 @@ export default {
       const section = document.getElementById(id);
       const navbar = document.querySelector('.navbar');
       if (section && navbar) {
-        let offset = 0;
-        if (id === 'top') {
-          offset = -navbar.offsetHeight;
+        let offset = -navbar.offsetHeight;
+        if (id !== 'top') {
+          offset = -navbar.offsetHeight + 10; // 3px offset
         }
         const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset + offset;
         window.scrollTo({ top: sectionPosition, behavior: 'smooth' });
         this.activeSection = id;
       }
     },
+
     onScroll() {
       this.checkScroll();
       const sections = this.links.map(link => document.getElementById(link.id));
       const navbar = document.querySelector('.navbar');
-      const offset = navbar ? navbar.clientHeight : 0;
+      const navbarHeight = navbar ? navbar.clientHeight : 0;
 
-      sections.forEach(section => {
+      let activeSection = 'top';
+      const scrollPosition = window.scrollY + navbarHeight - 3; // 3px offset
+
+      for (let i = 1; i < sections.length; i++) {
+        const section = sections[i];
         if (section) {
-          const sectionTop = section.getBoundingClientRect().top - offset;
-          const sectionBottom = sectionTop + section.offsetHeight;
-          if (sectionTop <= 0 && sectionBottom > 0) {
-            this.activeSection = section.id;
+          const sectionTop = section.offsetTop;
+          if (scrollPosition >= sectionTop) {
+            activeSection = section.id;
+          } else {
+            break;
           }
         }
-      });
+      }
+
+      this.activeSection = activeSection;
     },
+
     checkScroll() {
       this.isScrolled = window.scrollY > 0;
     }
@@ -117,7 +126,7 @@ export default {
 .nav-links {
   display: flex;
   justify-content: center;
-  padding: 1.2rem 1rem;
+  padding: 1rem 1rem;
   border-radius: 1.5rem;
   list-style-type: none;
   margin: 1rem 0;
@@ -151,14 +160,19 @@ export default {
   border-color: #4ecdc4;
 }
 
+li {
+  display: flex;
+}
+
 @media (max-width: 1246px) {
   .brand-name {
     font-size: 1.3rem;
   }
 }
 
-@media (max-width: 1014px) {
+@media (max-width: 1024px) {
   .nav-container {
+    margin: 0 0;
     justify-content: center;
   }
   .brand-name {
@@ -166,43 +180,36 @@ export default {
   }
 }
 
-@media (max-width: 768px) {
-  .nav-container {
-    margin: 0 20px;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .brand-name {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .nav-links {
-    padding: 0.5rem;
-    gap: 0.5rem;
-    margin: 0.5rem 0;
-  }
-
-  .nav-links a {
+@media (max-width: 690px) {
+  a {
     font-size: 0.8rem;
-    padding: 0.3rem 0.6rem;
+  }
+  .nav-links {
+    flex-wrap: wrap;
+    padding: 0.5rem 0.5rem;
+  }
+
+  li {
+    display: flex;
+  }
+}
+
+@media (max-width: 612px) {
+  .nav-links {
+    margin-left: 10px;
+    margin-right: 10px;
   }
 }
 
 @media (max-width: 480px) {
-  .brand-name {
-    font-size: 1.2rem;
-  }
-
   .nav-links {
-    flex-wrap: wrap;
-    justify-content: center;
+    padding: 0.5rem 0.5rem;
   }
-
   .nav-links a {
     font-size: 0.7rem;
-    padding: 0.2rem 0.4rem;
+    padding: 0.2rem 0.5rem;
   }
+  
 }
+
 </style>
