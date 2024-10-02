@@ -122,4 +122,39 @@ h3 {
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 20px;
 }
+
+@media (max-width: 480px) {
+  .education-card {
+    width: 90%;
+    min-height: auto;
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .logo-container {
+    height: 100px;
+  }
+
+  .card-content {
+    padding: 1rem;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .place, .qualification, .year {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+  }
+
+  .drag-handle {
+    padding: 0.3rem;
+  }
+}
 </style>

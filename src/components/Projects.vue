@@ -107,9 +107,6 @@ section {
 }
 
 @media (max-width: 768px) {
-    section {
-        padding: 4rem 3%;
-    }
     h2 {
         font-size: 2rem;
     }

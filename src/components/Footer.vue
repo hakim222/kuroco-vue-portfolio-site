@@ -58,4 +58,11 @@ export default {
 .social-links a:hover {
     color: #4ecdc4;
 }
+
+@media (max-width: 480px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+    }
+}
 </style>

@@ -145,6 +145,7 @@ export default {
 }
 
 .project-title {
+    text-align: left;
     font-size: 1.5rem;
     margin-bottom: 15px;
     color: #ffffff;
@@ -289,6 +290,23 @@ export default {
     color: #45b7aa;
 }
 
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.tech-tag {
+    background-color: rgba(69, 183, 170, 0.2);
+    color: #45b7aa;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
 @media (max-width: 480px) {
     .project-card {
         padding: 20px;
@@ -323,26 +341,7 @@ export default {
         font-size: 0.9rem;
         padding: 6px 12px;
     }
-}
 
-.tech-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 15px;
-    margin-bottom: 20px;
-}
-
-.tech-tag {
-    background-color: rgba(69, 183, 170, 0.2);
-    color: #45b7aa;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-@media (max-width: 480px) {
     .tech-tag {
         font-size: 0.7rem;
         padding: 3px 8px;

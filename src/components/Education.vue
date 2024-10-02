@@ -223,4 +223,28 @@ section {
     border-radius: 10px;
     margin-top: 1rem;
 }
+
+@media (max-width: 480px) {
+    .education-list {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+
+    .drag-indicator {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .drag-indicator i {
+        font-size: 1rem;
+    }
+
+    .vote-message {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+}
 </style>
