@@ -58,10 +58,6 @@ section {
     color: #e0e0e0;
 }
 
-h2 {
-    font-size: 2rem;
-}
-
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
