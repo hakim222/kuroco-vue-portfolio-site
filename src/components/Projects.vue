@@ -4,7 +4,6 @@
         <div v-if="loading" class="loading">Loading projects...</div>
         <div v-else-if="error" class="error-message">
             {{ error }}
-            <button @click="fetchProjects" class="retry-button">Retry</button>
         </div>
         <div v-else class="projects-grid">
             <ProjectsCards v-for="project in projects" :key="project.topics_id" :project="project" />
@@ -46,7 +45,7 @@ export default {
                 })
                 .catch(error => {
                     console.error(error);
-                    this.error = 'An error occurred while fetching projects. Please try again.';
+                    this.error = 'Failed to load projects data. Please try again.';
                     this.loading = false;
                 });
         }
@@ -59,6 +58,10 @@ section {
     color: #e0e0e0;
 }
 
+h2 {
+    font-size: 2rem;
+}
+
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -66,7 +69,8 @@ section {
     justify-content: center;
 }
 
-.loading, .error-message {
+.loading,
+.error-message {
     text-align: center;
     font-size: 1.2rem;
     margin-top: 2rem;
@@ -74,6 +78,11 @@ section {
 
 .error-message {
     color: #ff6b6b;
+    height: 200px;
+    background: rgba(255, 107, 107, 0.1);
+    border-radius: 10px;
+    margin-top: 1rem;
+    padding: 1rem;
 }
 
 .retry-button {

@@ -146,8 +146,9 @@ export default {
 
 .project-title {
     text-align: left;
+    font-weight: 500;
     font-size: 1.5rem;
-    margin-bottom: 15px;
+    margin: 0;
     color: #ffffff;
 }
 
@@ -265,8 +266,9 @@ export default {
 }
 
 .project-header {
+    margin-top: 1rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     margin-bottom: 15px;
 }
@@ -346,5 +348,15 @@ export default {
         font-size: 0.7rem;
         padding: 3px 8px;
     }
+}
+
+.vote-message.error {
+    background-color: rgba(78, 0, 0, 0.6);
+    border: 1px solid rgba(255, 99, 71, 0.4);
+    color: rgb(180, 74, 55);
+}
+
+.vote-message.error::before {
+    content: '\f071';
 }
 </style>

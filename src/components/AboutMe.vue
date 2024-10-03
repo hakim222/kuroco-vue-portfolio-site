@@ -106,22 +106,6 @@ section {
   color: #e0e0e0;
 }
 
-.bento-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-.bento-item {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  padding: 2rem;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
 h3 {
   color: #ffffff;
   font-size: 1.8rem;
@@ -145,18 +129,37 @@ p {
   line-height: 1.6;
 }
 
-.skills-container, .hobbies-container {
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.bento-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.skills-container,
+.hobbies-container {
   display: flex;
   flex-direction: column;
 }
 
-.skills-grid, .hobbies-grid {
+.skills-grid,
+.hobbies-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 1.5rem;
 }
 
-.skill-item, .hobby-item {
+.skill-item,
+.hobby-item {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -170,7 +173,8 @@ p {
   margin-bottom: 0.8rem;
 }
 
-.skill-name, .hobby-subject {
+.skill-name,
+.hobby-subject {
   font-size: 0.9rem;
   color: #ffffff;
   font-weight: 500;
@@ -198,6 +202,7 @@ p {
 .error-message {
   color: #ff6b6b;
   text-align: center;
+  height: 90px;
   padding: 1rem;
   background: rgba(255, 107, 107, 0.1);
   border-radius: 10px;
@@ -208,22 +213,28 @@ p {
   .bento-grid {
     grid-template-columns: 1fr;
   }
-  
 }
 
 @media (max-width: 480px) {
   .bento-grid {
     gap: 1rem;
   }
+
   .bento-item {
     padding: 1rem;
   }
+
   .name {
     font-size: 1.5rem;
   }
-  .location, .section-title, .name, .section-content {
+
+  .location,
+  .section-title,
+  .name,
+  .section-content {
     margin: 0;
   }
+
   .location {
     margin-top: 0.5rem;
   }
@@ -232,6 +243,7 @@ p {
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
   }
+
   .section-content {
     font-size: 0.8rem;
   }

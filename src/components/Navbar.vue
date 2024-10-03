@@ -34,23 +34,20 @@ export default {
       if (section && navbar) {
         let offset = -navbar.offsetHeight;
         if (id !== 'top') {
-          offset = -navbar.offsetHeight + 10; // 3px offset
+          offset = -navbar.offsetHeight + 10;
         }
         const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset + offset;
         window.scrollTo({ top: sectionPosition, behavior: 'smooth' });
         this.activeSection = id;
       }
     },
-
     onScroll() {
       this.checkScroll();
       const sections = this.links.map(link => document.getElementById(link.id));
       const navbar = document.querySelector('.navbar');
       const navbarHeight = navbar ? navbar.clientHeight : 0;
-
       let activeSection = 'top';
-      const scrollPosition = window.scrollY + navbarHeight - 3; // 3px offset
-
+      const scrollPosition = window.scrollY + navbarHeight - 3;
       for (let i = 1; i < sections.length; i++) {
         const section = sections[i];
         if (section) {
@@ -62,10 +59,8 @@ export default {
           }
         }
       }
-
       this.activeSection = activeSection;
     },
-
     checkScroll() {
       this.isScrolled = window.scrollY > 0;
     }
@@ -118,15 +113,10 @@ export default {
   animation: gradientShift 8s ease infinite;
 }
 
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
 .nav-links {
   display: flex;
   justify-content: center;
-  padding: 1rem 1rem;
+  padding: 1rem;
   border-radius: 1.5rem;
   list-style-type: none;
   margin: 1rem 0;
@@ -160,8 +150,9 @@ export default {
   border-color: #4ecdc4;
 }
 
-li {
-  display: flex;
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 @media (max-width: 1246px) {
@@ -172,7 +163,7 @@ li {
 
 @media (max-width: 1024px) {
   .nav-container {
-    margin: 0 0;
+    margin: 0;
     justify-content: center;
   }
   .brand-name {
@@ -181,16 +172,12 @@ li {
 }
 
 @media (max-width: 690px) {
-  a {
-    font-size: 0.8rem;
-  }
   .nav-links {
     flex-wrap: wrap;
-    padding: 0.5rem 0.5rem;
+    padding: 0.5rem;
   }
-
-  li {
-    display: flex;
+  .nav-links a {
+    font-size: 0.8rem;
   }
 }
 
@@ -203,14 +190,12 @@ li {
 
 @media (max-width: 480px) {
   .nav-links {
-    padding: 0.5rem 0.5rem;
+    padding: 0.5rem;
     column-gap: 0.2rem;
   }
   .nav-links a {
     font-size: 0.7rem;
     padding: 0.2rem 0.5rem;
   }
-  
 }
-
 </style>

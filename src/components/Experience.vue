@@ -148,6 +148,7 @@ h3 {
 
 .error-message {
     color: #ff6b6b;
+    height: 200px;
     text-align: center;
     padding: 1rem;
     background: rgba(255, 107, 107, 0.1);

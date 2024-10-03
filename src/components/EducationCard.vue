@@ -33,10 +33,11 @@ export default {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: all 0.3s ease;
   position: relative;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   flex: 0 0 auto;
   width: 400px;
   min-height: 500px;
@@ -44,7 +45,6 @@ export default {
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(255, 255, 255, 0.18);
   cursor: move;
 }
 
@@ -74,13 +74,28 @@ export default {
   overflow-y: auto;
 }
 
+.card-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.card-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.card-content::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+}
+
 h3 {
   font-size: 1.5rem;
   margin-bottom: 0.75rem;
   color: #ffffff;
 }
 
-.place, .qualification, .year {
+.place,
+.qualification,
+.year {
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
   color: rgba(255, 255, 255, 0.8);
@@ -110,19 +125,6 @@ h3 {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.card-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.card-content::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.card-content::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 20px;
-}
-
 @media (max-width: 480px) {
   .education-card {
     width: 90%;
@@ -144,7 +146,9 @@ h3 {
     margin-bottom: 0.5rem;
   }
 
-  .place, .qualification, .year {
+  .place,
+  .qualification,
+  .year {
     font-size: 1rem;
     margin-bottom: 0.3rem;
   }
