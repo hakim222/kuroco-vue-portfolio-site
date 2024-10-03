@@ -5,7 +5,7 @@
       <div class="content">
         <p>Hello there! Welcome to my site.</p>
         <h1 class="name">Hakim 'Azizan</h1>
-        <p class="title">Full Stack Developer & UI/UX Enthusiast</p>
+        <p class="title">Front-end Developer & UI/UX Enthusiast</p>
         <p class="description">
           Crafting elegant solutions with code and design. Specializing in web technologies and creating seamless user
           experiences.
